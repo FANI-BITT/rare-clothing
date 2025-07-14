@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rare - Exquisite Ladies Wear</title>
+    <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- CSS Variables for consistent theming --- */
+        :root {
+            --primary-color: #e60023; /* Rare's accent color (deep red) */
+            --dark-bg: #000; /* Black background */
+            --light-text: #fff; /* White text */
+            --card-bg: #fff; /* White card background */
+            --text-color: #333; /* Dark grey text */
+            --light-grey-bg: #f0f2f5; /* Light grey background for body */
+            --input-border: #ddd; /* Light grey border for inputs */
+            --button-blue: #007bff; /* Standard blue for buttons */
+            --button-blue-hover: #0056b3; /* Darker blue on hover */
+            --button-grey: #6c757d; /* Grey for secondary buttons */
+            --button-grey-hover: #5a6268; /* Darker grey on hover */
+            --success-green: #4CAF50; /* Green for success/discount */
+        }
+
+        /* --- Global Body & Root Styles --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            background-color: var(--light-grey-bg);
+            overflow-x: hidden; /* Prevent horizontal scroll on small screens */
+        }
+
+        /* --- Blurred Background Effect --- */
+        .blurred-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px); /* Apply blur effect */
+            z-index: -1; /* Send to the very back */
+            transition: background-image 0.5s ease-in-out, filter 0.5s ease-in-out;
+            opacity: 0.6; /* Slight transparency */
+            will-change: filter, background-image; /* Optimize for smooth transitions */
+        }
+
+        /* --- Header (Navigation Bar) --- */
+        .header {
+            width: 100%;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            padding: 15px 40px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky; /* Sticky header on scroll */
+            top: 0;
+            z-index: 100; /* Ensure header is always on top */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+            cursor: pointer; /* Indicate clickable logo */
+        }
+        .header h1 span {
+            color: var(--primary-color); /* Accent color for the dot */
+        }
+        .header nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 1.1em;
+            transition: color 0.3s ease; /* Smooth color transition on hover */
+        }
+        .header nav a:hover {
+            color: var(--primary-color); /* Highlight on hover */
+        }
+
+        /* --- Page Sections (for SPA effect) --- */
+        .page-section {
+            width: 100%;
+            display: none; /* Hidden by default, shown by JS */
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px; /* Space below header */
+        }
+        .page-section.active {
+            display: flex; /* Show active page */
+        }
+
+        /* --- Hero Section (Landing Page) --- */
+        .hero-section {
+            width: 100%;
+            height: 600px; /* Fixed height for hero image */
+            background-image: url('https://images.unsplash.com/photo-1598554286134-8c0c9780521d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'); /* High-quality model image */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--light-text);
+            text-align: center;
+            position: relative;
+            margin-bottom: 50px;
+            animation: fadeIn 1.5s ease-out; /* Fade-in animation */
+        }
+        .hero-overlay {
+            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for text readability */
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-section h2 {
+            font-size: 4em;
+            margin: 0;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Text shadow for contrast */
+        }
+        .hero-section p {
+            font-size: 1.5em;
+            margin-top: 10px;
+            max-width: 700px;
+            line-height: 1.5;
+        }
+        .shop-now-btn {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px; /* Pill shape */
+            font-size: 1.2em;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 30px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+        }
+        .shop-now-btn:hover {
+            background-color: #c9001b; /* Darker red on hover */
+            transform: translateY(-3px); /* Lift effect on hover */
+        }
+
+        /* --- Filter Section --- */
+        .filter-section {
+            width: 90%;
+            max-width: 900px;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        .filter-section h2 {
+            width: 100%;
+            color: var(--text-color);
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .filter-section input[type="number"] {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--input-border);
+            font-size: 1em;
+            width: 120px;
+            text-align: center;
+        }
+        .filter-section button {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 12px 25px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .filter-section button:hover {
+            background-color: #c9001b;
+            transform: translateY(-2px);
+        }
+
+        /* --- Product Grid Container --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid columns */
+            gap: 30px; /* Space between cards */
+            padding: 20px;
+            max-width: 1200px;
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        /* --- Product Card Styles --- */
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden; /* Ensures image corners are rounded correctly */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pushes buttons to bottom */
+        }
+        .product-card:hover {
+            transform: translateY(-7px); /* Lift effect on hover */
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18); /* Enhanced shadow on hover */
+        }
+        .product-card img {
+            max-width: 100%;
+            height: 380px; /* Fixed height for consistent card sizes */
+            object-fit: cover; /* Ensures images fill the space without distortion */
+            border-radius: 10px;
+            margin-bottom: 18px;
+            border: 1px solid #eee;
+            background-color: var(--dark-bg); /* Enforce black background for images */
+            cursor: pointer; /* Indicate clickable image for blur effect */
+        }
+        .product-card h3 {
+            font-size: 1.7em;
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+        .product-card .original-price {
+            font-size: 1em;
+            color: #888;
+            text-decoration: line-through;
+            margin-bottom: 5px;
+        }
+        .product-card .price {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .product-card .discount {
+            background-color: var(--success-green);
+            color: white;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-weight: bold;
+            z-index: 10; /* Ensure discount tag is above image */
+        }
+        .product-card .actions {
+            display: flex;
+            flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .product-card .actions button {
+            background-color: var(--button-blue);
+            color: white;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.05em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            flex-grow: 1; /* Make buttons expand evenly */
+            min-width: 120px; /* Ensure buttons don't get too small */
+        }
+        .product-card .actions button:hover {
+            background-color: var(--button-blue-hover);
+            transform: translateY(-2px);
+        }
+        .product-card .details-btn {
+            background-color: var(--button-grey);
+        }
+        .product-card .details-btn:hover {
+            background-color: var(--button-grey-hover);
+        }
+       
+        .product-card .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 2.1em;
+            color: #ccc; /* Default grey heart */
+            cursor: pointer;
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            transition: color 0.3s ease, transform 0.2s ease;
+            z-index: 10; /* Ensure heart is clickable */
+        }
+        .product-card .favorite-btn:hover {
+            transform: scale(1.15); /* Slightly larger on hover */
+        }
+        .product-card .favorite-btn.liked {
+            color: var(--primary-color); /* Red when liked */
+        }
+
+        /* --- Social Share Buttons --- */
+        .social-share {
+            position: absolute;
+            bottom: 20px; /* Position at the bottom of the card */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 11; /* Above other card elements */
+        }
+        .product-card:hover .social-share {
+            opacity: 1; /* Show on hover */
+            transform: translateX(-50%) translateY(-5px); /* Lift slightly on hover */
+        }
+        .social-share a {
+            font-size: 1.8em;
+            color: #555; /* Default icon color */
+            transition: color 0.3s ease;
+        }
+        .social-share a.whatsapp:hover { color: #25D366; } /* WhatsApp green */
+        .social-share a.facebook:hover { color: #1877F2; } /* Facebook blue */
+
+        /* --- Form Containers (Login, Signup, Forgot Password, Admin) --- */
+        .form-container {
+            background-color: var(--card-bg); /* Changed to card-bg for consistency */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 450px;
+            max-width: 90%;
+            position: relative;
+            z-index: 1;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+            margin-top: 50px; /* Space from header */
+            margin-bottom: 50px;
+        }
+        .form-container:hover {
+            transform: translateY(-5px); /* Lift effect */
+        }
+        .form-container h2 {
+            margin-bottom: 30px;
+            color: var(--dark-bg);
+            font-size: 2.5em;
+            letter-spacing: 2px;
+        }
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        .input-group input, .input-group textarea {
+            width: calc(100% - 22px); /* Account for padding and border */
+            padding: 12px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 1.1em;
+            box-sizing: border-box; /* Include padding and border in width */
+            transition: border-color 0.3s ease;
+        }
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 5px rgba(230, 0, 35, 0.3); /* Focus glow */
+        }
+        .form-btn {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .form-btn:hover {
+            background-color: #c9001b;
+            transform: translateY(-2px);
+        }
+        .form-links {
+            margin-top: 25px;
+            font-size: 1em;
+        }
+        .form-links a {
+            color: var(--button-blue);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        .form-links a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* --- Responsive Design (Mobile First) --- */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column; /* Stack logo and nav on small screens */
+                gap: 10px;
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .header nav {
+                margin-top: 10px;
+            }
+            .header nav a {
+                margin: 0 15px;
+                font-size: 1em;
+            }
+            .hero-section {
+                height: 400px;
+                margin-bottom: 30px;
+            }
+            .hero-section h2 {
+                font-size: 2.5em;
+            }
+            .hero-section p {
+                font-size: 1.1em;
+                padding: 0 20px;
+            }
+            .shop-now-btn {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+            .filter-section {
+                padding: 20px;
+                width: 95%;
+                flex-direction: column; /* Stack filter elements */
+            }
+            .filter-section h2 {
+                font-size: 1.5em;
+            }
+            .filter-group {
+                flex-direction: column;
+                width: 100%;
+            }
+            .filter-section input[type="number"] {
+                width: 80%;
+                max-width: 200px;
+            }
+            .product-grid {
+                grid-template-columns: 1fr; /* Single column on small screens */
+                padding: 15px;
+            }
+            .product-card {
+                width: 100%; /* Take full width on small screens */
+                margin: 0 auto; /* Center cards */
+            }
+            .product-card .actions button {
+                min-width: unset; /* Remove min-width on small screens */
+            }
+            .form-container {
+                padding: 30px 20px;
+            }
+            .form-container h2 {
+                font-size: 2em;
+            }
+            .input-group input, .input-group textarea {
+                font-size: 1em;
+            }
+            .form-btn {
+                font-size: 1.1em;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Blurred Background -->
+    <div id="blurredBg" class="blurred-background"></div>
+
+    <!-- Header / Navigation -->
+    <header class="header">
+        <h1 onclick="showPage('homePage')">Rare<span>.</span></h1>
+        <nav>
+            <a href="#" onclick="showPage('homePage'); return false;">Shop</a>
+            <a href="#" onclick="showPage('loginPage'); return false;">Login</a>
+            <a href="#" onclick="showPage('signupPage'); return false;">Sign Up</a>
+            <a href="#" onclick="showPage('adminPanel'); return false;">Admin</a> <!-- New Admin Link -->
+        </nav>
+    </header>
+
+    <!-- --- HOME PAGE SECTION --- -->
+    <section id="homePage" class="page-section active">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-overlay">
+                <h2>Elegance Redefined by Rare.</h2>
+                <p>Discover our exclusive collection of exquisite ladies' wear, crafted for timeless style and modern sophistication.</p>
+                <a href="#products-section" class="shop-now-btn" onclick="scrollToProducts()">Shop Now</a>
+            </div>
+        </div>
+
+        <!-- Price Filter Section -->
+        <div id="products-section" class="filter-section">
+            <h2>Shop Our Collection</h2>
+            <div class="filter-group">
+                <label for="minPrice">Price Range:</label>
+                <input type="number" id="minPrice" placeholder="Min Price" value="2000">
+                <span>-</span>
+                <input type="number" id="maxPrice" placeholder="Max Price" value="10000">
+                <button onclick="applyPriceFilter()">Apply Filter</button>
+            </div>
+            <p style="margin-top: 15px; color: #666; width: 100%;">
+                (Note: Price filtering is demonstrated with dummy data. A real website requires a backend database.)
+            </p>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="product-grid" id="productGrid">
+            <!-- Product cards will be dynamically loaded here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- --- LOGIN PAGE SECTION --- -->
+    <section id="loginPage" class="page-section">
+        <div class="form-container">
+            <h2>Rare. Login</h2>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="loginEmail">Email / Phone</label>
+                    <input type="text" id="loginEmail" placeholder="Enter your email or phone" required>
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="form-btn">Login</button>
+                <div class="form-links">
+                    <a href="#" onclick="showPage('forgotPasswordPage'); return false;">Forgot Password?</a>
+                    <span> | </span>
+                    <a href="#" onclick="showPage('signupPage'); return false;">Create an Account</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- --- SIGN UP PAGE SECTION --- -->
+    <section id="signupPage" class="page-section">
+        <div class="form-container">
+            <h2>Rare. Sign Up</h2>
+            <form id="signupForm">
+                <div class="input-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" placeholder="Enter your full name" required>
+                </div>
+                <div class="input-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email address" required>
+                </div>
+                <div class="input-group">
+                    <label for="signupPhone">Phone Number</label>
+                    <input type="tel" id="signupPhone" placeholder="e.g., +923001234567" required>
+                </div>
+                <div class="input-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Enter your password" required>
+                </div>
+                <div class="input-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="form-btn">Sign Up</button>
+                <div class="form-links">
+                    Already have an account? <a href="#" onclick="showPage('loginPage'); return false;">Login here</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- --- FORGOT PASSWORD PAGE SECTION --- -->
+    <section id="forgotPasswordPage" class="page-section">
+        <div class="form-container">
+            <h2>Rare. Forgot Password</h2>
+            <p>Enter your registered email or phone number to receive a password reset code.</p>
+            <form id="forgotPasswordForm">
+                <div class="input-group">
+                    <label for="resetContact">Email / Phone Number</label>
+                    <input type="text" id="resetContact" placeholder="Enter your email or phone" required>
+                </div>
+                <button type="submit" class="form-btn">Send Reset Code</button>
+                <div class="form-links">
+                    <a href="#" onclick="showPage('loginPage'); return false;">Back to Login</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- --- ADMIN PANEL SECTION --- -->
+    <section id="adminPanel" class="page-section">
+        <div class="form-container">
+            <h2>Admin Panel - Add New Product</h2>
+            <p style="color: var(--primary-color); font-weight: bold;">(Note: Yeh sirf frontend demo hai. Data mustaqil save nahi hoga.)</p>
+            <form id="addProductForm">
+                <div class="input-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" placeholder="e.g., Rare Summer Dress" required>
+                </div>
+                <div class="input-group">
+                    <label for="productPrice">Price (PKR)</label>
+                    <input type="number" id="productPrice" placeholder="e.g., 4000" required min="1">
+                </div>
+                <div class="input-group">
+                    <label for="productDiscount">Discount (%)</label>
+                    <input type="number" id="productDiscount" placeholder="e.g., 20 (optional)" min="0" max="100">
+                </div>
+                <div class="input-group">
+                    <label for="productImageUrl">Image URL</label>
+                    <input type="url" id="productImageUrl" placeholder="e.g., https://images.unsplash.com/photo-..." required>
+                    <small style="color: #888;">High-quality images use karein, black background ke sath.</small>
+                </div>
+                <div class="input-group">
+                    <label for="productDetails">Product Details</label>
+                    <textarea id="productDetails" placeholder="Product ki tafseeli maloomat..." rows="3" required></textarea>
+                </div>
+                <button type="submit" class="form-btn">Add Product</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        // --- Dummy Product Data (Backend se data ki naqal) ---
+        // Behtar aur mustaqil image URLs istemal kiye gaye hain.
+        const products = [
+            {
+                id: 1,
+                name: 'Rare Emerald Dress',
+                originalPrice: 5000,
+                price: 4000,
+                discount: '20%',
+                imageUrl: 'https://images.unsplash.com/photo-1579737158752-19e34e9e03d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'A stunning emerald green dress perfect for evening wear. Made with premium silk and intricate embroidery.'
+            },
+            {
+                id: 2,
+                name: 'Rare Sapphire Gown',
+                originalPrice: 8500,
+                price: 7225,
+                discount: '15%',
+                imageUrl: 'https://images.unsplash.com/photo-1599580509890-0c9f131a196e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Elegant sapphire blue gown, ideal for formal events. Features a flowing silhouette and delicate lace accents.'
+            },
+            {
+                id: 3,
+                name: 'Rare Crimson Kurta',
+                originalPrice: 3500,
+                price: 3150,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1582236940801-44703a11f81d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Stylish crimson kurta with traditional motifs. Comfortable and chic for everyday wear.'
+            },
+            {
+                id: 4,
+                name: 'Rare Pearl Anarkali',
+                originalPrice: 9000,
+                price: 8100,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1627993475877-e23a4b7f8f9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Exquisite pearl white Anarkali, embellished with fine handwork. Perfect for festive occasions.'
+            },
+            {
+                id: 5,
+                name: 'Rare Midnight Shawl',
+                originalPrice: 2500,
+                price: 2000,
+                discount: '20%',
+                imageUrl: 'https://images.unsplash.com/photo-1574513813959-b1311059f3d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Luxurious midnight blue shawl, soft and warm. A versatile accessory for any outfit.'
+            },
+            {
+                id: 6,
+                name: 'Rare Rose Pink Saree',
+                originalPrice: 7000,
+                price: 6300,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1601633519894-37a505b26b3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Graceful rose pink saree with delicate golden borders. Ideal for weddings and celebrations.'
+            },
+            {
+                id: 7,
+                name: 'Rare Azure Dupatta',
+                originalPrice: 1800,
+                price: 1530,
+                discount: '15%',
+                imageUrl: 'https://images.unsplash.com/photo-15582236940801-44703a11f81d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80', // Reusing for demo
+                details: 'Lightweight azure dupatta with fine thread work. Adds a pop of color to any outfit.'
+            },
+            {
+                id: 8,
+                name: 'Rare Gold Embroidered Lehenga',
+                originalPrice: 12000,
+                price: 10800,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1617196035904-8b6b7a5a8f6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Luxurious gold embroidered lehenga with intricate detailing. Perfect for grand occasions.'
+            },
+            {
+                id: 9,
+                name: 'Rare Silk Scarf',
+                originalPrice: 1500,
+                price: 1200,
+                discount: '20%',
+                imageUrl: 'https://images.unsplash.com/photo-1520006403930-d36573c2a31d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Soft and elegant silk scarf, perfect for adding a touch of luxury.'
+            },
+            {
+                id: 10,
+                name: 'Rare Velvet Blouse',
+                originalPrice: 4000,
+                price: 3600,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1582236940801-44703a11f81d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80', // Reusing for demo
+                details: 'Rich velvet blouse with intricate design, ideal for festive wear.'
+            },
+            {
+                id: 11,
+                name: 'Rare Cotton Kurti',
+                originalPrice: 2200,
+                price: 1980,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1598554286134-8c0c9780521d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80', // Reusing for demo
+                details: 'Comfortable cotton kurti for daily wear, breathable and stylish.'
+            },
+            {
+                id: 12,
+                name: 'Rare Chiffon Dupatta',
+                originalPrice: 1200,
+                price: 1080,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1599580509890-0c9f131a196e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80', // Reusing for demo
+                details: 'Lightweight chiffon dupatta with a soft drape, perfect for summer.'
+            },
+            {
+                id: 13,
+                name: 'Rare Embroidered Frock',
+                originalPrice: 6500,
+                price: 5850,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1582236940801-44703a11f81d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80', // Reusing for demo
+                details: 'Beautifully embroidered frock, suitable for casual gatherings.'
+            },
+            {
+                id: 14,
+                name: 'Rare Silk Palazzo',
+                originalPrice: 3000,
+                price: 2700,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1627993475877-e23a4b7f8f9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80', // Reusing for demo
+                details: 'Comfortable and stylish silk palazzo pants for a relaxed look.'
+            },
+            {
+                id: 15,
+                name: 'Rare Georgette Saree',
+                originalPrice: 7500,
+                price: 6750,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1574513813959-b1311059f3d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80', // Reusing for demo
+                details: 'Lightweight georgette saree with a graceful fall, perfect for parties.'
+            },
+            {
+                id: 16,
+                name: 'Rare Velvet Shawl',
+                originalPrice: 3800,
+                price: 3420,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1549298413-5bc6204c6d32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Soft velvet shawl with intricate border, ideal for winter evenings.'
+            },
+            {
+                id: 17,
+                name: 'Rare Organza Dress',
+                originalPrice: 9500,
+                price: 8550,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1617196035904-8b6b7a5a8f6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Elegant organza dress with a modern cut, perfect for formal events.'
+            },
+            {
+                id: 18,
+                name: 'Rare Printed Lawn Suit',
+                originalPrice: 4200,
+                price: 3780,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1598554286134-8c0c9780521d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80', // Reusing for demo
+                details: 'Vibrant printed lawn suit, comfortable and stylish for daily wear.'
+            },
+            {
+                id: 19,
+                name: 'Rare Chanderi Kurta',
+                originalPrice: 5500,
+                price: 4950,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1582236940801-44703a11f81d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80', // Reusing for demo
+                details: 'Traditional Chanderi kurta with delicate weaving, elegant for festive occasions.'
+            },
+            {
+                id: 20,
+                name: 'Rare Brocade Blouse',
+                originalPrice: 4800,
+                price: 4320,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1599580509890-0c9f131a196e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80', // Reusing for demo
+                details: 'Rich velvet blouse with intricate design, ideal for festive wear.'
+            },
+            {
+                id: 21,
+                name: 'Rare Silk Blend Suit',
+                originalPrice: 6000,
+                price: 5400,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1601633519894-37a505b26b3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80', // Reusing for demo
+                details: 'Comfortable silk blend suit with subtle embroidery, suitable for semi-formal events.'
+            },
+            {
+                id: 22,
+                name: 'Rare Embroidered Shawl',
+                originalPrice: 3200,
+                price: 2880,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1520006403930-d36573c2a31d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80', // Reusing for demo
+                details: 'Warm and stylish embroidered shawl, adds elegance to any outfit.'
+            },
+            {
+                id: 23,
+                name: 'Rare Cotton Palazzo',
+                originalPrice: 2000,
+                price: 1800,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1627993475877-e23a4b7f8f9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Breathable cotton palazzo pants, perfect for everyday comfort.'
+            },
+            {
+                id: 24,
+                name: 'Rare Banarasi Saree',
+                originalPrice: 10000,
+                price: 9000,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1574513813959-b1311059f3d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Traditional Banarasi saree with rich weaving, a timeless classic.'
+            },
+            {
+                id: 25,
+                name: 'Rare Linen Kurta',
+                originalPrice: 2800,
+                price: 2520,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1598554286134-8c0c9780521d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+                details: 'Lightweight linen kurta, ideal for summer and casual outings.'
+            },
+            {
+                id: 26,
+                name: 'Rare Zari Work Dupatta',
+                originalPrice: 2000,
+                price: 1800,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1599580509890-0c9f131a196e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Beautiful dupatta with intricate zari work, perfect for festive wear.'
+            },
+            {
+                id: 27,
+                name: 'Rare Silk Trousers',
+                originalPrice: 3500,
+                price: 3150,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1627993475877-e23a4b7f8f9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Comfortable silk trousers, a versatile addition to any wardrobe.'
+            },
+            {
+                id: 28,
+                name: 'Rare Embroidered Jacket',
+                originalPrice: 8000,
+                price: 7200,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1582236940801-44703a11f81d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Stylish embroidered jacket, perfect for layering over traditional outfits.'
+            },
+            {
+                id: 29,
+                name: 'Rare Net Saree',
+                originalPrice: 9000,
+                price: 8100,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1601633519894-37a505b26b3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Lightweight net saree with delicate embellishments, ideal for parties.'
+            },
+            {
+                id: 30,
+                name: 'Rare Viscose Kurta',
+                originalPrice: 2500,
+                price: 2250,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1598554286134-8c0c9780521d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Soft viscose kurta, comfortable for everyday wear.'
+            },
+            {
+                id: 31,
+                name: 'Rare Silk Gown',
+                originalPrice: 11000,
+                price: 9900,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1581044777550-4cfa6073ce0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Luxurious silk gown with elegant drape, perfect for grand events.'
+            },
+            {
+                id: 32,
+                name: 'Rare Embroidered Top',
+                originalPrice: 3000,
+                price: 2700,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1523381294911-ddc43aa6a781?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Chic embroidered top, versatile for casual and semi-formal wear.'
+            },
+            {
+                id: 33,
+                name: 'Rare Chiffon Scarf',
+                originalPrice: 1400,
+                price: 1260,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1579737158752-19e34e9e03d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Lightweight chiffon scarf, adds a touch of elegance to any outfit.'
+            },
+            {
+                id: 34,
+                name: 'Rare Cotton Tunic',
+                originalPrice: 2600,
+                price: 2340,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1599580509890-0c9f131a196e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Comfortable cotton tunic for everyday wear, stylish and breathable.'
+            },
+            {
+                id: 35,
+                name: 'Rare Silk Palazzo Set',
+                originalPrice: 7000,
+                price: 6300,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1582236940801-44703a11f81d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Elegant silk palazzo set with matching top, perfect for special occasions.'
+            },
+            {
+                id: 36,
+                name: 'Rare Bridal Lehenga',
+                originalPrice: 25000,
+                price: 22500,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1617196035904-8b6b7a5a8f6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Exquisite bridal lehenga with heavy embellishments, a dream for every bride.'
+            },
+            {
+                id: 37,
+                name: 'Rare Casual Kurta',
+                originalPrice: 2000,
+                price: 1800,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1598554286134-8c0c9780521d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+                details: 'Simple and stylish casual kurta, perfect for daily wear.'
+            },
+            {
+                id: 38,
+                name: 'Rare Party Wear Saree',
+                originalPrice: 8500,
+                price: 7650,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1574513813959-b1311059f3d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Stunning party wear saree with sequin work, perfect for evening events.'
+            },
+            {
+                id: 39,
+                name: 'Rare Denim Jacket',
+                originalPrice: 4500,
+                price: 4050,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1549298413-5bc6204c6d32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Fashionable denim jacket, a must-have for a chic look.'
+            },
+            {
+                id: 40,
+                name: 'Rare Floral Print Dress',
+                originalPrice: 5000,
+                price: 4500,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1601633519894-37a505b26b3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Beautiful floral print dress, perfect for spring and summer.'
+            },
+            {
+                id: 41,
+                name: 'Rare Embroidered Shawl',
+                originalPrice: 3200,
+                price: 2880,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1520006403930-d36573c2a31d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Warm and stylish embroidered shawl, adds elegance to any outfit.'
+            },
+            {
+                id: 42,
+                name: 'Rare Cotton Palazzo',
+                originalPrice: 2000,
+                price: 1800,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1627993475877-e23a4b7f8f9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Breathable cotton palazzo pants, perfect for everyday comfort.'
+            },
+            {
+                id: 43,
+                name: 'Rare Banarasi Saree',
+                originalPrice: 10000,
+                price: 9000,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1574513813959-b1311059f3d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Traditional Banarasi saree with rich weaving, a timeless classic.'
+            },
+            {
+                id: 44,
+                name: 'Rare Linen Kurta',
+                originalPrice: 2800,
+                price: 2520,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1598554286134-8c0c9780521d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+                details: 'Lightweight linen kurta, ideal for summer and casual outings.'
+            },
+            {
+                id: 45,
+                name: 'Rare Zari Work Dupatta',
+                originalPrice: 2000,
+                price: 1800,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1599580509890-0c9f131a196e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Beautiful dupatta with intricate zari work, perfect for festive wear.'
+            },
+            {
+                id: 46,
+                name: 'Rare Silk Trousers',
+                originalPrice: 3500,
+                price: 3150,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1627993475877-e23a4b7f8f9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Comfortable silk trousers, a versatile addition to any wardrobe.'
+            },
+            {
+                id: 47,
+                name: 'Rare Embroidered Jacket',
+                originalPrice: 8000,
+                price: 7200,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1582236940801-44703a11f81d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Stylish embroidered jacket, perfect for layering over traditional outfits.'
+            },
+            {
+                id: 48,
+                name: 'Rare Net Saree',
+                originalPrice: 9000,
+                price: 8100,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1601633519894-37a505b26b3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Lightweight net saree with delicate embellishments, ideal for parties.'
+            },
+            {
+                id: 49,
+                name: 'Rare Viscose Kurta',
+                originalPrice: 2500,
+                price: 2250,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1598554286134-8c0c9780521d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Soft viscose kurta, comfortable for everyday wear.'
+            },
+            {
+                id: 50,
+                name: 'Rare Party Dress',
+                originalPrice: 7000,
+                price: 6300,
+                discount: '10%',
+                imageUrl: 'https://images.unsplash.com/photo-1599580509890-0c9f131a196e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
+                details: 'Elegant party dress with a modern design, perfect for special occasions.'
+            }
+        ];
+
+        // --- SPA Navigation Logic ---
+        function showPage(pageId) {
+            // Get all page sections
+            const pages = document.querySelectorAll('.page-section');
+            // Hide all pages
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            // Show the requested page
+            document.getElementById(pageId).classList.add('active');
+
+            // Optionally, scroll to the top of the page when navigating
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // If navigating to home, re-render products to apply any initial filters or state
+            if (pageId === 'homePage') {
+                renderProducts();
+            }
+        }
+
+        // --- Product Rendering Function ---
+        function renderProducts(filteredProducts = products) {
+            const productGrid = document.getElementById('productGrid');
+            productGrid.innerHTML = ''; // Clear existing products
+
+            if (filteredProducts.length === 0) {
+                productGrid.innerHTML = '<p style="width: 100%; text-align: center; font-size: 1.2em; color: #777; margin-top: 30px;">Is price range ke liye koi product nahi mila. Barah e karam filter adjust karein.</p>';
+                return;
+            }
+
+            filteredProducts.forEach(product => {
+                const productCard = `
+                    <div class="product-card" data-product-id="${product.id}">
+                        ${product.discount ? `<div class="discount">${product.discount}</div>` : ''}
+                        <button class="favorite-btn" onclick="toggleFavorite(this, ${product.id})">&#9829;</button>
+                        <img src="${product.imageUrl}" alt="${product.name}" 
+                             onerror="this.onerror=null; this.src='https://placehold.co/320x380/000000/FFFFFF?text=Image+Not+Found';" 
+                             onclick="setBlurredBackground(this.src)">
+                        <h3>${product.name}</h3>
+                        <p class="original-price">PKR ${product.originalPrice.toLocaleString()}</p>
+                        <p class="price">PKR ${product.price.toLocaleString()}</p>
+                        
+                        <div class="actions">
+                            <button onclick="addToCart(${product.id})">Add to Cart</button>
+                            <button class="details-btn" onclick="viewDetails(${product.id})">Details</button>
+                        </div>
+                        <div class="social-share">
+                            <a href="#" class="whatsapp" onclick="shareOnWhatsApp('${product.name} - PKR ${product.price.toLocaleString()}. Check it out: YOUR_PRODUCT_URL_HERE?id=${product.id}', '${product.imageUrl}'); return false;"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#" class="facebook" onclick="shareOnFacebook('${product.name}', 'YOUR_PRODUCT_URL_HERE?id=${product.id}', '${product.imageUrl}', '${product.details}'); return false;"><i class="fab fa-facebook"></i></a>
+                        </div>
+                    </div>
+                `;
+                productGrid.innerHTML += productCard;
+            });
+        }
+
+        // --- User Interaction Functions ---
+        function addToCart(productId) {
+            alert(`Product ${productId} cart mein shamil kar diya gaya! (Demo)`);
+            // Aik asli app mein, yeh data backend par cart management ke liye bheja jayega.
+        }
+
+        function toggleFavorite(button, productId) {
+            button.classList.toggle('liked');
+            if (button.classList.contains('liked')) {
+                alert(`Product ${productId} favorites mein shamil kar diya gaya! (Demo)`);
+                // Aik asli app mein, yeh user ke favorites ko database mein update karega.
+            } else {
+                alert(`Product ${productId} favorites se hata diya gaya! (Demo)`);
+                // Aik asli app mein, yeh user ke favorites se remove karega.
+            }
+        }
+
+        function viewDetails(productId) {
+            // Dummy data se product details talash karein
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                // Aik asli app mein, yeh ek mukammal product detail page par le jayega.
+                // Is single-file demo ke liye, hum details alert mein dikhayenge.
+                alert(`Product Name: ${product.name}\nPrice: PKR ${product.price.toLocaleString()}\nDetails: ${product.details}\n\n(Aik mukammal website mein, yeh ek alag page hoga jahan model ne wohi kapra pehna hoga.)`);
+            } else {
+                alert('Product details nahi mile.');
+            }
+        }
+
+        function scrollToProducts() {
+            document.getElementById('products-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- Dynamic Background Blur ---
+        function setBlurredBackground(imageUrl) {
+            const blurredBg = document.getElementById('blurredBg');
+            blurredBg.style.backgroundImage = `url('${imageUrl}')`;
+        }
+
+        // --- Social Sharing Functions ---
+        function shareOnWhatsApp(text, imageUrl) {
+            const encodedText = encodeURIComponent(text);
+            const whatsappUrl = `https://wa.me/?text=${encodedText}`; // Direct image sharing web intent ke zariye limited hai.
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function shareOnFacebook(title, url, imageUrl, description) {
+            const encodedUrl = encodeURIComponent(url);
+            // Behtar nataij ke liye, YOUR_PRODUCT_URL_HERE aapki live website par ek asli URL hona chahiye jismein Open Graph tags hon.
+            const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodeURIComponent(description)}`;
+            window.open(facebookShareUrl, '_blank', 'width=600,height=400');
+        }
+
+        // --- Price Filter Logic ---
+        function applyPriceFilter() {
+            const minPriceInput = document.getElementById('minPrice');
+            const maxPriceInput = document.getElementById('maxPrice');
+            const minPrice = parseFloat(minPriceInput.value);
+            const maxPrice = parseFloat(maxPriceInput.value);
+
+            // Bunyadi validation
+            if (isNaN(minPrice) || isNaN(maxPrice) || minPrice < 0 || maxPrice < 0 || minPrice > maxPrice) {
+                alert('Barah e karam sahi minimum aur maximum qeemat darj karein, jahan minimum <= maximum ho.');
+                minPriceInput.value = '2000'; // Default par reset karein
+                maxPriceInput.value = '10000'; // Default par reset karein
+                renderProducts(products); // Agar invalid input ho to sab products dikhayen
+                return;
+            }
+
+            const filteredProducts = products.filter(product => {
+                return product.price >= minPrice && product.price <= maxPrice;
+            });
+
+            renderProducts(filteredProducts);
+        }
+
+        // --- Form Submission Handlers (Client-Side Demo) ---
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Default form submission roken
+
+            const emailOrPhone = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!emailOrPhone || !password) {
+                alert('Barah e karam email/phone aur password dono darj karein.');
+                return;
+            }
+            
+            // --- DEMO AUTHENTICATION ---
+            // Aik asli application mein, yeh data authentication ke liye backend par bheja jayega.
+            // Example: fetch('/api/login', { method: 'POST', body: JSON.stringify({ emailOrPhone, password }) })
+            // .then(response => response.json()).then(data => { if (data.success) { showPage('homePage'); } else { alert('Login nakam: ' + data.message); } });
+            
+            // Sirf demo maqasid ke liye:
+            if (emailOrPhone === "test@rare.com" && password === "rarepassword") {
+                alert('Login kamyab! Khush amdeed, Rare Customer. (Demo)');
+                showPage('homePage'); // Home page par redirect karein
+            } else {
+                alert('Invalid email/phone ya password. (Demo)');
+            }
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Default form submission roken
+
+            const fullName = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const phone = document.getElementById('signupPhone').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!fullName || !email || !phone || !password || !confirmPassword) {
+                alert('Barah e karam sab fields fill karein.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords match nahi karte.');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Password kam az kam 6 characters ka hona chahiye.');
+                return;
+            }
+
+            // --- DEMO REGISTRATION ---
+            // Aik asli application mein, yeh data user registration ke liye backend par bheja jayega.
+            // Example: fetch('/api/signup', { method: 'POST', body: JSON.stringify({ fullName, email, phone, password }) })
+            // .then(response => response.json()).then(data => { if (data.success) { alert('Account ban gaya!'); showPage('loginPage'); } else { alert('Sign up nakam: ' + data.message); } });
+
+            // Sirf demo maqasid ke liye:
+            alert('Sign up kamyab! (Demo)\nFull Name: ' + fullName + '\nEmail: ' + email + '\nPhone: ' + phone + '\n\nAb aap "test@rare.com" aur "rarepassword" se login kar sakte hain.');
+            showPage('loginPage'); // Demo signup ke baad login page par redirect karein
+        });
+
+        document.getElementById('forgotPasswordForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Default form submission roken
+
+            const contactInfo = document.getElementById('resetContact').value;
+
+            if (!contactInfo) {
+                alert('Barah e karam apna email ya phone number darj karein.');
+                return;
+            }
+
+            // --- DEMO PASSWORD RESET ---
+            // Aik asli application mein, yeh backend par API call trigger karega.
+            // Backend phir contact info verify karega aur email/SMS ke zariye code bheje ga.
+            // Example: fetch('/api/forgot-password', { method: 'POST', body: JSON.stringify({ contact: contactInfo }) })
+            // .then(response => response.json()).then(data => { if (data.success) { alert('Code bheja gaya!'); } else { alert('Nakam: ' + data.message); } });
+
+            // Sirf demo maqasid ke liye:
+            alert('Aik password reset code ' + contactInfo + ' par bheja gaya hai. (Demo)\nApna email/phone check karein. Yeh ek simulation hai.');
+            // Aik asli app mein, aap phir code aur naya password enter karne ke liye naya form dikhayenge.
+        });
+
+        // --- Admin Panel Logic (Frontend Only) ---
+        document.getElementById('addProductForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Default form submission roken
+
+            const productName = document.getElementById('productName').value;
+            const productPrice = parseFloat(document.getElementById('productPrice').value);
+            const productDiscount = parseFloat(document.getElementById('productDiscount').value) || 0; // Agar empty ho to 0 default
+            const productImageUrl = document.getElementById('productImageUrl').value;
+            const productDetails = document.getElementById('productDetails').value;
+
+            if (!productName || isNaN(productPrice) || productPrice <= 0 || !productImageUrl || !productDetails) {
+                alert('Barah e karam sab zaroori product fields sahi tareeqe se fill karein (Name, Price, Image URL, Details).');
+                return;
+            }
+
+            // Discounted price calculate karein
+            const discountedPrice = productPrice - (productPrice * (productDiscount / 100));
+
+            // Naya product object banayen
+            const newProduct = {
+                id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1, // Unique ID generate karein
+                name: productName,
+                originalPrice: productPrice,
+                price: discountedPrice,
+                discount: productDiscount > 0 ? `${productDiscount}%` : '',
+                imageUrl: productImageUrl,
+                details: productDetails
+            };
+
+            products.push(newProduct); // Hamare dummy products array mein shamil karein
+            renderProducts(); // Product grid ko dobara render karein naya product dikhane ke liye
+
+            alert(`Product "${productName}" kamyabi se add ho gaya! (Demo - Mustaqil save nahi hoga)`);
+            this.reset(); // Form clear karein
+            showPage('homePage'); // Home page par wapis jayen naya product dekhne ke liye
+        });
+
+
+        // --- Initial Load Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(); // Home page par ibtedai tor par sab products load karein
+            // Ibtedai load ke liye default blurred background image set karein
+            setBlurredBackground('https://images.unsplash.com/photo-1616038166929-1051515f4350?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+        });
+    </script>
+</body>
+</html>
